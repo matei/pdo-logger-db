@@ -1,0 +1,13 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Framework\DB\LoggerInterface" type="Magento\Framework\DB\Logger\LoggerProxy"/>
+
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="dev_db_querylog_enable" xsi:type="object">Matei\PdoLoggerDb\Console\Command\QueryLogEnableCommand</item>
+                <item name="dev_db_querylog_disable" xsi:type="object">Matei\PdoLoggerDb\Console\Command\QueryLogDisableCommand</item>
+                <item name="dev_db_querylog_newsession" xsi:type="object">Matei\PdoLoggerDb\Console\Command\QueryLogStartNewSession</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

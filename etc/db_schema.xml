@@ -24,7 +24,7 @@
             <column name="session_id"/>
         </index>
         <constraint xsi:type="primary" referenceId="PRIMARY">
-            <column name="query_id"/>
+            <column name="entity_id"/>
         </constraint>
         <constraint xsi:type="foreign" referenceId="PDO_LOG_LINE_SESSION_ID" table="pdo_log_line" column="session_id" referenceTable="pdo_log_session" referenceColumn="entity_id" onDelete="CASCADE"/>
     </table>
