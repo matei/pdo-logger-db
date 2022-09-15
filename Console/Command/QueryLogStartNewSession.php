@@ -2,10 +2,8 @@
 namespace Matei\PdoLoggerDb\Console\Command;
 
 use Magento\Framework\App\DeploymentConfig\Writer;
-use Magento\Framework\Config\File\ConfigFilePool;
 use Magento\Framework\DB\Adapter\AdapterInterface;
-use Magento\Framework\DB\Logger\LoggerProxy;
-use Magento\Framework\Exception\FileSystemException;
+use Magento\Framework\App\ResourceConnection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -35,12 +33,12 @@ class QueryLogStartNewSession extends Command
 
     public function __construct(
             Writer $deployConfigWriter,
-            AdapterInterface $adapter,
+            ResourceConnection $resourceConnection,
                $name = null
     ) {
         parent::__construct($name);
         $this->deployConfigWriter = $deployConfigWriter;
-        $this->adapter = $adapter;
+        $this->adapter = $resourceConnection->getConnection('core_write');
     }
 
     public function configure()

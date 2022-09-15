@@ -3,7 +3,7 @@ namespace Matei\PdoLoggerDb\Console\Command;
 
 use Magento\Framework\App\DeploymentConfig\Writer;
 use Magento\Framework\Config\File\ConfigFilePool;
-use Magento\Framework\DB\Logger\LoggerProxy;
+use Matei\PdoLoggerDb\DB\Logger\LoggerProxy;
 use Magento\Framework\Exception\FileSystemException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -45,7 +45,7 @@ class QueryLogEnableCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $data = [LoggerProxy::PARAM_ALIAS => LoggerProxy::LOGGER_ALIAS_FILE];
+        $data = [LoggerProxy::PARAM_ALIAS => LoggerProxy::LOGGER_ALIAS_DB];
 
         $logAllQueries = true;
         $logQueryTime = '0.001';

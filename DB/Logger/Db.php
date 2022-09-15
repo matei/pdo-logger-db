@@ -1,6 +1,7 @@
 <?php
 namespace Matei\PdoLoggerDb\DB\Logger;
 
+use Magento\Framework\Debug;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\DB\Logger\LoggerAbstract;
@@ -44,9 +45,9 @@ class Db extends LoggerAbstract
 
     /**
      * @param ResourceConnection $resource
-     * @param $logAllQueries
-     * @param $logQueryTime
-     * @param $logCallStack
+     * @param bool $logAllQueries
+     * @param float $logQueryTime
+     * @param bool $logCallStack
      */
     public function __construct(
         ResourceConnection $resource,
@@ -113,8 +114,8 @@ class Db extends LoggerAbstract
         )->order('entity_id desc')
         ->limit(1);
         $session =  $select->query()->fetch(\PDO::FETCH_ASSOC);
-        if ($session && isset($session['session_id'])) {
-            return $session['session_id'];
+        if ($session && isset($session['entity_id'])) {
+            return $session['entity_id'];
         } else {
             $createdAt = date('Y-m-d H:i:s');
             $name = 'Test ' . $createdAt;
@@ -132,7 +133,7 @@ class Db extends LoggerAbstract
     /**
      * @return AdapterInterface
      */
-    private function getConnection(): AdapterInterface
+    private function getConnection()
     {
         if (is_null($this->connection)) {
             $this->connection = $this->resource->getConnection('core_write');

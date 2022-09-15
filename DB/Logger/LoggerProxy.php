@@ -5,6 +5,7 @@ use Magento\Framework\DB\Logger\LoggerProxy as MagentoLoggerProxy;
 use Magento\Framework\DB\LoggerInterface;
 use Magento\Framework\DB\Logger\FileFactory;
 use Magento\Framework\DB\Logger\QuietFactory;
+use Magento\Framework\Debug;
 
 class LoggerProxy extends MagentoLoggerProxy
 {
@@ -92,6 +93,7 @@ class LoggerProxy extends MagentoLoggerProxy
      * LoggerProxy constructor.
      * @param FileFactory $fileFactory
      * @param QuietFactory $quietFactory
+     * @param DBFactory $dbFactory
      * @param bool $loggerAlias
      * @param bool $logAllQueries
      * @param float $logQueryTime
@@ -100,7 +102,7 @@ class LoggerProxy extends MagentoLoggerProxy
     public function __construct(
         FileFactory $fileFactory,
         QuietFactory $quietFactory,
-        DBFactory $DBFactory,
+        DBFactory $dbFactory,
         $loggerAlias,
         $logAllQueries = true,
         $logQueryTime = 0.001,
@@ -108,6 +110,7 @@ class LoggerProxy extends MagentoLoggerProxy
     ) {
         $this->fileFactory = $fileFactory;
         $this->quietFactory = $quietFactory;
+        $this->dbFactory = $dbFactory;
         $this->loggerAlias = $loggerAlias;
         $this->logAllQueries = $logAllQueries;
         $this->logQueryTime = $logQueryTime;
@@ -140,12 +143,54 @@ class LoggerProxy extends MagentoLoggerProxy
                             'logCallStack' => $this->logCallStack
                         ]
                     );
+                    break;
 
                 default:
                     $this->logger = $this->quietFactory->create();
                     break;
             }
         }
+
         return $this->logger;
+    }
+
+    /**
+     * Adds log record
+     *
+     * @param string $str
+     * @return void
+     */
+    public function log($str)
+    {
+        $this->getLogger()->log($str);
+    }
+
+    /**
+     * @param string $type
+     * @param string $sql
+     * @param array $bind
+     * @param \Zend_Db_Statement_Pdo|null $result
+     * @return void
+     */
+    public function logStats($type, $sql, $bind = [], $result = null)
+    {
+        $this->getLogger()->logStats($type, $sql, $bind, $result);
+    }
+
+    /**
+     * @param \Exception $exception
+     * @return void
+     */
+    public function critical(\Exception $exception)
+    {
+        $this->getLogger()->critical($exception);
+    }
+
+    /**
+     * @return void
+     */
+    public function startTimer()
+    {
+        $this->getLogger()->startTimer();
     }
 }
