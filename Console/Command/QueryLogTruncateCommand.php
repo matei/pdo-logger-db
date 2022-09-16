@@ -11,7 +11,7 @@ class QueryLogTruncateCommand extends Command
 {
     const COMMAND_NAME = 'dev:db-query-log:truncate';
 
-    const SUCCESS_MESSAGE = "DB query logging disabled.";
+    const SUCCESS_MESSAGE = "Logs were truncated";
 
     /**
      * @var AdapterInterface
@@ -43,5 +43,6 @@ class QueryLogTruncateCommand extends Command
     {
         $this->adapter->truncateTable($this->adapter->getTableName('pdo_log_line'));
         $this->adapter->delete($this->adapter->getTableName('pdo_log_session'));
+        $output->writeln("<info>". self::SUCCESS_MESSAGE . "</info>");
     }
 }

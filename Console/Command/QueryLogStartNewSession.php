@@ -12,7 +12,7 @@ class QueryLogStartNewSession extends Command
 {
     const COMMAND_NAME = 'dev:db-query-log:new-session';
 
-    const SUCCESS_MESSAGE = "DB query logging disabled.";
+    const SUCCESS_MESSAGE = "New session created";
 
     /**
      * input parameter name
@@ -70,5 +70,7 @@ class QueryLogStartNewSession extends Command
                 'created_at' => $createdAt
             ]
         );
+
+        $output->writeln("<info>". self::SUCCESS_MESSAGE . "</info>");
     }
 }
