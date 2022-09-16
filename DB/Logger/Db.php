@@ -135,12 +135,16 @@ class Db extends LoggerAbstract
                 break;
 
             case self::TYPE_QUERY:
-                if (preg_match('/SELECT.*FROM\s([^\s]+)\s.*/', $sql, $matches)) {
+                if (preg_match('/SELECT.*FROM\s([^\s]+).*/', $sql, $matches)) {
                     $summary = 'SELECT FROM ' . $matches[1];
                 } else if (preg_match('/UPDATE\s([^\s]+)/', $sql, $matches)) {
                     $summary = 'UPDATE ' . $matches[1];
                 } else if (preg_match('/INSERT\sINTO\s([^\s]+)/', $sql, $matches)) {
-                    $summary = 'INSERT ' . $matches[1];
+                    $summary = 'INSERT INTO ' . $matches[1];
+                } else if (preg_match('/DELETE\sFROM\s([^\s]+)/', $sql, $matches)) {
+                    $summary = 'DELETE FROM ' . $matches[1];
+                } else {
+                    $summary = 'OTHER';
                 }
                 break;
         }
