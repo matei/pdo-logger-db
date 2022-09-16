@@ -43,6 +43,8 @@ class Db extends LoggerAbstract
      */
     public static $insideLogging = false;
 
+    private static $deferredInsers = [];
+
     /**
      * @param ResourceConnection $resource
      * @param bool $logAllQueries
@@ -80,7 +82,6 @@ class Db extends LoggerAbstract
             return;
         }
         self::$insideLogging = true;
-
         switch ($type) {
             case self::TYPE_CONNECT:
                 $sql = 'CONNECT';
@@ -91,7 +92,6 @@ class Db extends LoggerAbstract
         }
 
         $insert = [
-            'session_id' => $this->getCurrentSessionId(),
             'content' => $sql,
             'summary' => $this->summarize($type, $sql),
             'request_uri' => $_SERVER['REQUEST_URI'] ?? '',
@@ -100,11 +100,25 @@ class Db extends LoggerAbstract
             'row_count' => $result instanceof \Zend_Db_Statement_Pdo ? $result->rowCount() : 0
         ];
 
-        $this->getConnection()->insert(
-            $this->getConnection()->getTableName('pdo_log_line'),
-            $insert
-        );
+        self::$deferredInsers[] = $insert;
 
+        self::$insideLogging = false;
+    }
+
+    public function performInserts()
+    {
+        if (self::$insideLogging) {
+            return;
+        }
+        self::$insideLogging = true;
+        $currentSession = $this->getCurrentSessionId();
+        foreach (self::$deferredInsers as $insert) {
+            $insert['session_id'] = $currentSession;
+            $this->getConnection()->insert(
+                $this->getConnection()->getTableName('pdo_log_line'),
+                $insert
+            );
+        }
         self::$insideLogging = false;
     }
 
