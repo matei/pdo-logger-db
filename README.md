@@ -21,6 +21,8 @@ Add repository to `composer.json`:
 Then run
 ```shell
 $ composer require matei/pdo-logger-db
+$ bin/magento c:f
+$ bin/magento setup:upgrade
 ```
 
 
