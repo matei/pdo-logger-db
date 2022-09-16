@@ -16,6 +16,7 @@
                 <item name="dev_db_querylog_enable" xsi:type="object">Matei\PdoLoggerDb\Console\Command\QueryLogEnableCommand</item>
                 <item name="dev_db_querylog_disable" xsi:type="object">Matei\PdoLoggerDb\Console\Command\QueryLogDisableCommand</item>
                 <item name="dev_db_querylog_newsession" xsi:type="object">Matei\PdoLoggerDb\Console\Command\QueryLogStartNewSession</item>
+                <item name="dev_db_querylog_truncate" xsi:type="object">Matei\PdoLoggerDb\Console\Command\QueryLogTruncateCommand</item>
             </argument>
         </arguments>
     </type>

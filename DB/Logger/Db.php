@@ -93,6 +93,7 @@ class Db extends LoggerAbstract
         $insert = [
             'session_id' => $this->getCurrentSessionId(),
             'content' => $sql,
+            'summary' => $this->summarize($type, $sql),
             'time' => sprintf('%.4f', microtime(true) - $this->timer),
             'stacktrace' => Debug::backtrace(true, false),
             'row_count' => $result instanceof \Zend_Db_Statement_Pdo ? $result->rowCount() : 0
@@ -104,6 +105,32 @@ class Db extends LoggerAbstract
         );
 
         self::$insideLogging = false;
+    }
+
+    private function summarize($type, $sql)
+    {
+        $summary = '';
+        switch ($type) {
+            case self::TYPE_CONNECT:
+                $summary = 'CONNECT';
+                break;
+
+            case self::TYPE_TRANSACTION:
+                $summary = 'TRANSACTION ' . $sql;
+                break;
+
+            case self::TYPE_QUERY:
+                if (preg_match('/SELECT.*FROM\s([^\s]+)\s.*/', $sql, $matches)) {
+                    $summary = 'SELECT FROM ' . $matches[1];
+                } else if (preg_match('/UPDATE\s([^\s]+)/', $sql, $matches)) {
+                    $summary = 'UPDATE ' . $matches[1];
+                } else if (preg_match('/INSERT\sINTO\s([^\s]+)/', $sql, $matches)) {
+                    $summary = 'INSERT ' . $matches[1];
+                }
+                break;
+        }
+
+        return $summary;
     }
 
 
