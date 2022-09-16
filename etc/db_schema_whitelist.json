@@ -16,6 +16,7 @@
             "content": true,
             "summary": true,
             "stacktrace": true,
+            "request_uri": true,
             "row_count": true,
             "time": true
         },

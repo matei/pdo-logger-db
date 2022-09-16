@@ -94,6 +94,7 @@ class Db extends LoggerAbstract
             'session_id' => $this->getCurrentSessionId(),
             'content' => $sql,
             'summary' => $this->summarize($type, $sql),
+            'request_uri' => $_SERVER['REQUEST_URI'] ?? '',
             'time' => sprintf('%.4f', microtime(true) - $this->timer),
             'stacktrace' => Debug::backtrace(true, false),
             'row_count' => $result instanceof \Zend_Db_Statement_Pdo ? $result->rowCount() : 0
