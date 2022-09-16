@@ -20,7 +20,7 @@ Add repository to `composer.json`:
 
 Then run
 ```shell
-$ composer require matei/pdo-logger-db
+$ composer require matei/pdo-logger-db dev-master
 $ bin/magento c:f
 $ bin/magento setup:upgrade
 ```
