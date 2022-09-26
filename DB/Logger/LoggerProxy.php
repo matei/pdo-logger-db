@@ -93,7 +93,7 @@ class LoggerProxy extends MagentoLoggerProxy
      * LoggerProxy constructor.
      * @param FileFactory $fileFactory
      * @param QuietFactory $quietFactory
-     * @param DBFactory $dbFactory
+     * @param DbFactory $dbFactory
      * @param bool $loggerAlias
      * @param bool $logAllQueries
      * @param float $logQueryTime
@@ -102,7 +102,7 @@ class LoggerProxy extends MagentoLoggerProxy
     public function __construct(
         FileFactory $fileFactory,
         QuietFactory $quietFactory,
-        DBFactory $dbFactory,
+        DbFactory $dbFactory,
         $loggerAlias,
         $logAllQueries = true,
         $logQueryTime = 0.001,
