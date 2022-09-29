@@ -5,6 +5,7 @@ use Magento\Framework\Debug;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\DB\Logger\LoggerAbstract;
+use Matei\PdoLoggerDb\DB\Adapter\Pdo\MysqlProxy;
 
 class Db extends LoggerAbstract
 {
@@ -38,12 +39,23 @@ class Db extends LoggerAbstract
      */
     private $logCallStack;
 
+
+    /**
+     * @var MysqlProxy
+     */
+    private $mysqlProxy;
+
     /**
      * @var bool
      */
     public static $insideLogging = false;
 
     private static $deferredInsers = [];
+
+    /**
+     * @var string
+     */
+    protected $connectionName = '';
 
     /**
      * @param ResourceConnection $resource
@@ -97,7 +109,8 @@ class Db extends LoggerAbstract
             'request_uri' => $_SERVER['REQUEST_URI'] ?? '',
             'time' => sprintf('%.4f', microtime(true) - $this->timer),
             'stacktrace' => Debug::backtrace(true, false),
-            'row_count' => $result instanceof \Zend_Db_Statement_Pdo ? $result->rowCount() : 0
+            'row_count' => $result instanceof \Zend_Db_Statement_Pdo ? $result->rowCount() : 0,
+            'connection' => $this->getConnectionName()
         ];
 
         self::$deferredInsers[] = $insert;
@@ -191,5 +204,21 @@ class Db extends LoggerAbstract
     public function critical(\Exception $e)
     {
         // TODO: Implement critical() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function getConnectionName(): string
+    {
+        return $this->connectionName;
+    }
+
+    /**
+     * @param string $connectionName
+     */
+    public function setConnectionName(string $connectionName): void
+    {
+        $this->connectionName = $connectionName;
     }
 }

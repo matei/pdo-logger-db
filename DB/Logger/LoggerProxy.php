@@ -5,7 +5,6 @@ use Magento\Framework\DB\Logger\LoggerProxy as MagentoLoggerProxy;
 use Magento\Framework\DB\LoggerInterface;
 use Magento\Framework\DB\Logger\FileFactory;
 use Magento\Framework\DB\Logger\QuietFactory;
-use Magento\Framework\Debug;
 
 class LoggerProxy extends MagentoLoggerProxy
 {
@@ -88,6 +87,11 @@ class LoggerProxy extends MagentoLoggerProxy
      * @var bool
      */
     private $logCallStack;
+
+    /**
+     * @var string
+     */
+    protected $connectionName = '';
 
     /**
      * LoggerProxy constructor.
@@ -174,6 +178,9 @@ class LoggerProxy extends MagentoLoggerProxy
      */
     public function logStats($type, $sql, $bind = [], $result = null)
     {
+        if ($this->loggerAlias == self::LOGGER_ALIAS_DB) {
+            $this->getLogger()->setConnectionName($this->getConnectionName());
+        }
         $this->getLogger()->logStats($type, $sql, $bind, $result);
     }
 
@@ -192,5 +199,21 @@ class LoggerProxy extends MagentoLoggerProxy
     public function startTimer()
     {
         $this->getLogger()->startTimer();
+    }
+
+    /**
+     * @return string
+     */
+    public function getConnectionName(): string
+    {
+        return $this->connectionName;
+    }
+
+    /**
+     * @param string $connectionName
+     */
+    public function setConnectionName(string $connectionName): void
+    {
+        $this->connectionName = $connectionName;
     }
 }

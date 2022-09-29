@@ -1,5 +1,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Magento\Framework\DB\LoggerInterface" type="Matei\PdoLoggerDb\DB\Logger\LoggerProxy"/>
+    <preference for="Magento\ResourceConnections\DB\Adapter\Pdo\MysqlProxy" type="Matei\PdoLoggerDb\DB\Adapter\Pdo\MysqlProxy"/>
 
     <type name="Matei\PdoLoggerDb\DB\Logger\LoggerProxy">
         <arguments>

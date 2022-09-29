@@ -2,7 +2,7 @@
     "name": "matei/pdo-logger-db",
     "description": "Magento PDO Logger Adapter for DB",
     "require": {
-        "php": "~7.2|7.4.24"
+        "php": "~7.4.24"
     },
     "require-dev": {
         "lusitanian/oauth": "~0.8.10",
