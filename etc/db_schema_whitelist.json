@@ -18,7 +18,8 @@
             "stacktrace": true,
             "request_uri": true,
             "row_count": true,
-            "time": true
+            "time": true,
+            "connection": true
         },
         "index": {
             "SESSION_ID": true
